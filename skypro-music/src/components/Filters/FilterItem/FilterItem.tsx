@@ -11,14 +11,15 @@ type FilterItemType = {
 export default function FilterItem({ handleFilterClick, title, list, isOpened }: FilterItemType) {
   return (
     <div className={styles.wrapper}>
-      <div onClick={() => handleFilterClick(title)} className={classNames(styles.filterButton, styles.BtnText)}>
-        {title}
+      <div onClick={() => handleFilterClick(title)} className={classNames(styles.filterButton, styles.BtnText, {[styles.active]:isOpened, }
+      )}>
+      {title}
       </div>
-      {isOpened &&(<ul className={styles.filterList}>
+      {isOpened && (<ul className={styles.filterList}>
         {list.map((item) => (
           <li className={styles.filterItem} key={item}>{item}</li>
         ))}
       </ul>)}
-    </div>
+      </div>
   );
 }

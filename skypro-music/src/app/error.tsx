@@ -3,7 +3,12 @@
 import { useEffect } from 'react';
 import styles from "./error.module.css";
 
-export default function Error({ error, reset }: any) {
+type ErrorType = {
+  error: Error;
+  reset: () => void;
+};
+
+export default function Error({ error, reset }: ErrorType) {
   useEffect(() => {
     console.error(error);
   }, [error]);
