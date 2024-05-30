@@ -1,24 +1,74 @@
 import styles from "./FilterItem.module.css";
 import classNames from "classnames";
+import { trackType } from "@/types";
+import { order } from "../data";
+import { useAppDispatch } from "@/hooks";
+import { setFilters } from "@/store/features/playlistSlice";
 
 type FilterItemType = {
   title: string;
-  list: string[];
+  value: "author" | "genre" | "order";
   handleFilterClick: (newFilter: string) => void;
   isOpened: boolean;
+  tracksData: trackType[];
+  optionList?: string[];
+  selected?: string[] | string;
+  toggleSelected?: (item: string) => void;
+  counter?: number | null;
 };
 
-export default function FilterItem({ handleFilterClick, title, list, isOpened }: FilterItemType) {
-  return (
-    <div className={styles.wrapper}>
-      <div onClick={() => handleFilterClick(title)} className={classNames(styles.filterButton, styles.BtnText, {[styles.active]:isOpened, }
-      )}>
+export default function FilterItem({ handleFilterClick, title, value, isOpened, tracksData, selected, counter = 0,
+  optionList = [], }: FilterItemType) {
+    const dispatch = useAppDispatch();
+    const getFilterList = () => {
+      if (value !== "order") {
+        const array = new Set(
+          tracksData?.map((track: trackType) => track[value]) || []
+        );
+        return Array.from(array);
+      }
+      return order;
+    };
+    const toggleFilter = (item: string) => {
+      if (value === "order") {
+        dispatch(setFilters({ order: item }));
+        return;
+      }
+      dispatch(
+        setFilters({
+          [value]: optionList.includes(item)
+            ? optionList.filter((el) => el !== item)
+            : [...optionList, item],
+        })
+      );
+    };
+    getFilterList();
+    return (
+      <div className={styles.wrapper}>
+        {counter !== 0 && <span className={styles.counter}>{counter}</span>}
+        <div
+          onClick={() => handleFilterClick(title)}
+          className={!isOpened? classNames(styles.filterButton, styles.BtnText) : classNames(styles.filterButtonActive, styles.BtnTextActive)}
+        >
       {title}
       </div>
       {isOpened && (<ul className={styles.filterList}>
-        {list.map((item) => (
-          <li className={styles.filterItem} key={item}>{item}</li>
-        ))}
+        {getFilterList().map((item) => {
+            const activeClass = selected?.includes(item)
+              ? styles.listActive
+              : "";
+            return (
+              <li
+                onClick={() => {
+                  if (toggleFilter) toggleFilter(item);
+                }}
+                className={classNames(styles.filterItem, activeClass)}
+                key={item}
+              >
+                {item}
+              </li>
+            );
+          })}
       </ul>)}
       </div>
   );

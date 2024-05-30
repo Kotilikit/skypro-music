@@ -5,6 +5,7 @@ import styles from "./Track.module.css";
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setCurrentTrack, toggleIsPlaying } from "@/store/features/playlistSlice";
+
 type TrackType = {
   track: trackType;
   tracksData: trackType[];
@@ -12,7 +13,7 @@ type TrackType = {
 
 export default function Track({ track, tracksData }: TrackType) {
   const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
-  const { name, author, album, duration_in_seconds, id } = track;
+  const { name, author, album } = track;
   const { isPlaying } = useAppSelector((store) => store.playlist);
 
   const dispatch = useAppDispatch();
