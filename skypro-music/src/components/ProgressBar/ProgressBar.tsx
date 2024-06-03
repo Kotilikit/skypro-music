@@ -1,22 +1,15 @@
-import { ChangeEvent } from "react";
+import React from "react";
 import styles from "./ProgressBar.module.css";
+import { ProgressBarType } from "@/types";
 
-type ProgressBarType = {
-  max: number | undefined;
-  value: number;
-  step: number;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-};
-
-export default function ProgressBar({
-  max = 0,
-  value,
-  step,
-  onChange,
-}: ProgressBarType) {
+const ProgressBar = React.memo(({ 
+  max = 0, 
+  value, 
+  step, 
+  onChange }: ProgressBarType) => {
   return (
     <input
-      className={styles.styledProgressInput}
+      className={styles.styledProgressInput} 
       type="range" 
       min="0" 
       max={max} 
@@ -25,4 +18,6 @@ export default function ProgressBar({
       onChange={onChange} 
     />
   );
-}
+});
+ProgressBar.displayName = "ProgressBar";
+export default ProgressBar;

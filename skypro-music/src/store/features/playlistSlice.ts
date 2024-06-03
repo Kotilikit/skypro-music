@@ -99,11 +99,14 @@ const playlistSlice = createSlice({
     ) => {
       state.filterOptions = {
         author: action.payload.author || state.filterOptions.author,
-        searchValue:
-          action.payload.searchValue || state.filterOptions.searchValue,
-        order: action.payload.order || state.filterOptions.order,
         genre: action.payload.genre || state.filterOptions.genre,
+        order: action.payload.order || state.filterOptions.order,
+        searchValue:
+          typeof action.payload.searchValue === "string"
+            ? action.payload.searchValue
+            : state.filterOptions.searchValue,
       };
+
       const arrFilter = state.initialTracks.filter((track) => {
         const hasAuthors = state.filterOptions.author.length != 0;
         const hasGenre = state.filterOptions.genre.length != 0;

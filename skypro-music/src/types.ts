@@ -1,3 +1,5 @@
+import { ChangeEvent } from "react";
+
 type userType = {
     id: number;
     username: string;
@@ -17,4 +19,11 @@ type userType = {
     logo: string | null;
     track_file: string;
     stared_user: userType[];
+  };
+
+  export type ProgressBarType = {
+    max: number | undefined;
+    value: number;
+    step: number;
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   };
