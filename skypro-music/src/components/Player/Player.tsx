@@ -1,17 +1,12 @@
 "use client";
 
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import styles from "./Player.module.css";
 import classNames from "classnames";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import VolumeBar from "../VolumeBar/VolumeBar";
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import {
-  setNextTrack,
-  setPrevtrack,
-  toggleIsPlaying,
-  toggleShuffle,
-} from "@/store/features/playlistSlice";
+import { setNextTrack, setPrevtrack, toggleIsPlaying, toggleShuffle } from "@/store/features/playlistSlice";
 
 export default function Player() {
   const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
@@ -24,7 +19,6 @@ export default function Player() {
   const { isPlaying } = useAppSelector((store) => store.playlist);
 
   const duration = audioRef.current?.duration;
-  useEffect(() => {});
   const togglePlay = () => {
     if (audioRef.current) {
       if (isPlaying) {
@@ -74,12 +68,12 @@ export default function Player() {
     }
   }, [currentTime]);
 
-  const handleSeek = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleSeek = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     if (audioRef.current) {
       setCurrentTime(Number(event.target.value));
       audioRef.current.currentTime = Number(event.target.value);
     }
-  };
+  },[]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -92,10 +86,12 @@ export default function Player() {
   };
 
   function FormatSeconds(inputSec: number | undefined) {
-    if (inputSec) {
-      let minutes: number = Math.floor(inputSec / 60);
+    if (inputSec !== undefined) { // проверяем, что inputSec определен
+      let minutes = Math.floor(inputSec / 60);
       let seconds = Math.floor(inputSec) - minutes * 60;
       return `${minutes} : ${seconds > 9 ? "" : "0"}${seconds} `;
+    } else {
+      return ''; // возвращаем пустую строку, если inputSec не определен
     }
   }
 
