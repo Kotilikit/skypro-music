@@ -87,7 +87,6 @@ const playlistSlice = createSlice({
     toggleShuffle: (state) => {
       state.isShuffle = !state.isShuffle;
     },
-    // Фильтр треков
     setFilters: (
       state,
       action: PayloadAction<{
@@ -99,15 +98,12 @@ const playlistSlice = createSlice({
     ) => {
       state.filterOptions = {
         author: action.payload.author || state.filterOptions.author,
-        genre: action.payload.genre || state.filterOptions.genre,
-        order: action.payload.order || state.filterOptions.order,
         searchValue:
-          typeof action.payload.searchValue === "string"
-            ? action.payload.searchValue
-            : state.filterOptions.searchValue,
+          action.payload.searchValue || state.filterOptions.searchValue,
+        order: action.payload.order || state.filterOptions.order,
+        genre: action.payload.genre || state.filterOptions.genre,
       };
-
-      const arrFilter = state.initialTracks.filter((track) => {
+      const arrFilters = state.initialTracks.filter((track) => {
         const hasAuthors = state.filterOptions.author.length != 0;
         const hasGenre = state.filterOptions.genre.length != 0;
         const isGenre = hasGenre
@@ -123,14 +119,14 @@ const playlistSlice = createSlice({
       });
       switch (state.filterOptions.order) {
         case "Сначала новые":
-          arrFilter.sort(
+          arrFilters.sort(
             (a, b) =>
               new Date(b.release_date).getTime() -
               new Date(a.release_date).getTime()
           );
           break;
         case "Сначала старые":
-          arrFilter.sort(
+          arrFilters.sort(
             (a, b) =>
               new Date(a.release_date).getTime() -
               new Date(b.release_date).getTime()
@@ -140,14 +136,10 @@ const playlistSlice = createSlice({
         default:
           break;
       }
-      state.filteredTracks = arrFilter;
+      state.filteredTracks = arrFilters;
     },
   },
 });
 
-
-
-export const { setCurrentTrack, setNextTrack, setIsShuffle, setPrevtrack, toggleShuffle, toggleIsPlaying, setFilters, setInitialTracks,
-
-} = playlistSlice.actions;
+export const { setCurrentTrack, setNextTrack, setIsShuffle, setPrevtrack, toggleShuffle, toggleIsPlaying, setFilters, setInitialTracks, } = playlistSlice.actions;
 export const playlistReducer = playlistSlice.reducer;
