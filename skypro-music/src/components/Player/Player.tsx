@@ -7,6 +7,7 @@ import ProgressBar from "../ProgressBar/ProgressBar";
 import VolumeBar from "../VolumeBar/VolumeBar";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setNextTrack, setPrevtrack, toggleIsPlaying, toggleShuffle } from "@/store/features/playlistSlice";
+import { FormatSeconds } from "@/lib/FormatSeconds";
 
 export default function Player() {
   const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
@@ -85,16 +86,6 @@ export default function Player() {
     setVolume(e.target.value);
   };
 
-  function FormatSeconds(inputSec: number | undefined) {
-    if (inputSec !== undefined) { // проверяем, что inputSec определен
-      let minutes = Math.floor(inputSec / 60);
-      let seconds = Math.floor(inputSec) - minutes * 60;
-      return `${minutes} : ${seconds > 9 ? "" : "0"}${seconds} `;
-    } else {
-      return ''; // возвращаем пустую строку, если inputSec не определен
-    }
-  }
-
   return (
     <>
       {currentTrack && (
@@ -122,7 +113,7 @@ export default function Player() {
                     className={styles.playerBtnPrev}
                   >
                     <svg className={styles.playerBtnPrevSvg}>
-                      <use xlinkHref="img/icon/sprite.svg#icon-prev" />
+                      <use xlinkHref="/img/icon/sprite.svg#icon-prev" />
                     </svg>
                   </div>
                   <div
@@ -131,7 +122,7 @@ export default function Player() {
                   >
                     <svg className={styles.playerBtnPlaySvg}>
                       <use
-                        xlinkHref={`img/icon/sprite.svg#${
+                        xlinkHref={`/img/icon/sprite.svg#${
                           isPlaying ? "icon-pause" : "icon-play"
                         }`}
                       />
@@ -142,7 +133,7 @@ export default function Player() {
                     className={styles.playerBtnNext}
                   >
                     <svg className={styles.playerBtnNextSvg}>
-                      <use xlinkHref="img/icon/sprite.svg#icon-next" />
+                      <use xlinkHref="/img/icon/sprite.svg#icon-next" />
                     </svg>
                   </div>
                   <div
@@ -154,7 +145,7 @@ export default function Player() {
                   >
                     <svg className={styles.playerBtnRepeatSvg}>
                       <use
-                        xlinkHref={`img/icon/sprite.svg#${
+                        xlinkHref={`/img/icon/sprite.svg#${
                           isLooped ? "icon-repeat-active" : "icon-repeat"
                         }`}
                       />
@@ -169,7 +160,7 @@ export default function Player() {
                   >
                     <svg className={styles.playerBtnShuffleSvg}>
                       <use
-                        xlinkHref={`img/icon/sprite.svg#${
+                        xlinkHref={`/img/icon/sprite.svg#${
                           isShuffle ? "icon-shuffle-active" : "icon-shuffle"
                         }`}
                       />
@@ -180,7 +171,7 @@ export default function Player() {
                   <div className={styles.trackPlayContain}>
                     <div className={styles.trackPlayImage}>
                       <svg className={styles.trackPlaySvg}>
-                        <use xlinkHref="img/icon/sprite.svg#icon-note" />
+                        <use xlinkHref="/img/icon/sprite.svg#icon-note" />
                       </svg>
                     </div>
                     <div className={styles.trackPlayAuthor}>
@@ -202,7 +193,7 @@ export default function Player() {
                       )}
                     >
                       <svg className={styles.trackPlayLikeSvg}>
-                        <use xlinkHref="img/icon/sprite.svg#icon-like" />
+                        <use xlinkHref="/img/icon/sprite.svg#icon-like" />
                       </svg>
                     </div>
                     <div
@@ -212,7 +203,7 @@ export default function Player() {
                       )}
                     >
                       <svg className={styles.trackPlayDislikeSvg}>
-                        <use xlinkHref="img/icon/sprite.svg#icon-dislike" />
+                        <use xlinkHref="/img/icon/sprite.svg#icon-dislike" />
                       </svg>
                     </div>
                   </div>
@@ -222,7 +213,7 @@ export default function Player() {
                 <div className={styles.volumeContent}>
                   <div className={styles.volumeImage}>
                     <svg className={styles.volumeSvg}>
-                      <use xlinkHref="img/icon/sprite.svg#icon-volume" />
+                      <use xlinkHref="/img/icon/sprite.svg#icon-volume" />
                     </svg>
                   </div>
                   <div
